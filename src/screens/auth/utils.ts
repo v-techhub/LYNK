@@ -8,6 +8,8 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema, registrationSchema } from "@/utils/zod"
 import { LoginFields, RegistrationFields } from "@/types/forms"
+import { useAuthContext } from "@/context/Auth"
+import { z } from "zod"
 
 type Properties = {
     handleLoginSubmit: UseFormHandleSubmit<LoginFields, undefined>
@@ -21,12 +23,13 @@ type Properties = {
 }
 
 export function useLoginRegister(): Properties {
+    const { login, loginSuccess, registerNewUser } = useAuthContext()
     const {
         handleSubmit: handleLoginSubmit,
         formState: { errors: loginErrors },
         register: loginRegister,
         reset: loginReset
-    } = useForm<LoginFields>({
+    } = useForm<z.infer<typeof loginSchema>>({
         resolver: zodResolver(loginSchema)
     })
 
@@ -35,18 +38,20 @@ export function useLoginRegister(): Properties {
         formState: { errors },
         register,
         reset
-    } = useForm<RegistrationFields>({
+    } = useForm<z.infer<typeof registrationSchema>>({
         resolver: zodResolver(registrationSchema)
     })
 
-    function onLoginSubmit(values: FieldValues) {
-        console.log(values)
-        loginReset()
+    async function onLoginSubmit(values: FieldValues) {
+        const { email, password } = values
+        await login(email, password)
+        loginSuccess && loginReset()
     }
 
-    function onRegistrationSubmit(values: FieldValues) {
-        console.log(values)
-        reset()
+    async function onRegistrationSubmit(values: FieldValues) {
+        const { username, email, password } = values
+        await registerNewUser(email, password, username)
+        loginSuccess && reset()
     }
 
     return {

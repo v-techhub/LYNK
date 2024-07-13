@@ -7,6 +7,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { Loader2 } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import {
@@ -16,9 +17,12 @@ import {
     TabsTrigger,
 } from "@/components/ui/tabs"
 import { useLoginRegister } from "./utils"
+import { useAuthContext } from "@/context/Auth"
 
 export default function LoginRegisterTab() {
- 
+
+    const { isLoading } = useAuthContext()
+
     const {
         handleLoginSubmit,
         onLoginSubmit,
@@ -53,7 +57,6 @@ export default function LoginRegisterTab() {
                                         id="email"
                                         type="email"
                                         {...loginRegister("email")}
-                                        name="email"
                                         className={`${loginErrors.email && "border-red-500"}`}
                                         autoFocus
                                     />
@@ -64,15 +67,16 @@ export default function LoginRegisterTab() {
                                     <Input
                                         id="password"
                                         type="password"
-                                        {...register("password")}
-                                        name="password"
+                                        {...loginRegister("password")}
                                         className={`${loginErrors.password && "border-red-500"}`}
                                     />
                                     {loginErrors.password && <span className="text-red-500 text-[10px]">{loginErrors.password.message}</span>}
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button type="submit">Login</Button>
+                                <Button disabled={isLoading} type="submit">
+                                    {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait</> : "Login"}
+                                </Button>
                             </CardFooter>
                         </Card>
                     </form>
@@ -93,7 +97,6 @@ export default function LoginRegisterTab() {
                                     <Input
                                         id="text"
                                         {...register("username")}
-                                        name="username"
                                         className={`${errors.username && "border-red-500"}`}
                                         autoFocus
                                     />
@@ -106,7 +109,6 @@ export default function LoginRegisterTab() {
                                         type="email"
                                         {...register("email")}
                                         className={`${errors.email && "border-red-500"}`}
-                                        name="email"
                                     />
                                     {errors.email && <span className="text-red-500 text-[10px]">{errors.email.message}</span>}
                                 </div>
@@ -117,13 +119,12 @@ export default function LoginRegisterTab() {
                                         type="password"
                                         {...register("password")}
                                         className={`${errors.password && "border-red-500"}`}
-                                        name="password"
                                     />
                                     {errors.password && <span className="text-red-500 text-[10px]">{errors.password.message}</span>}
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button type="submit">Register</Button>
+                                <Button disabled={isLoading} type="submit">{isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait</> : "Register"}</Button>
                             </CardFooter>
                         </Card>
                     </form>
