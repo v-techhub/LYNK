@@ -1,7 +1,9 @@
+
+
 const ChatBoard = () => {
-    return (
-        "Chat Board"
-    )
+
+
+    return "chat board"
 }
 
 export default ChatBoard

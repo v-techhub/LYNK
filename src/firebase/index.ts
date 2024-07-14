@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth"
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDlXCOy3Pbvp7DuM3pSv6o3MY8-OBUwb4M",
-    authDomain: "lynk-4298b.firebaseapp.com",
-    projectId: "lynk-4298b",
-    storageBucket: "lynk-4298b.appspot.com",
-    messagingSenderId: "29511041935",
-    appId: "1:29511041935:web:185400f9651b1778f841fa"
+    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+    appId: import.meta.env.VITE_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);

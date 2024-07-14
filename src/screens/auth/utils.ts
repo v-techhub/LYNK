@@ -7,23 +7,26 @@ import {
 } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { loginSchema, registrationSchema } from "@/utils/zod"
-import { LoginFields, RegistrationFields } from "@/types/forms"
 import { useAuthContext } from "@/context/Auth"
 import { z } from "zod"
+import { useNavigate } from "react-router-dom"
 
 type Properties = {
-    handleLoginSubmit: UseFormHandleSubmit<LoginFields, undefined>
-    loginErrors: FieldErrors<LoginFields>
-    loginRegister: UseFormRegister<LoginFields>
-    handleSubmit: UseFormHandleSubmit<RegistrationFields, undefined>
-    errors: FieldErrors<RegistrationFields>
-    register: UseFormRegister<RegistrationFields>
+    handleLoginSubmit: UseFormHandleSubmit<z.infer<typeof loginSchema>, undefined>
+    loginErrors: FieldErrors<z.infer<typeof loginSchema>>
+    loginRegister: UseFormRegister<z.infer<typeof loginSchema>>
+    handleSubmit: UseFormHandleSubmit<z.infer<typeof registrationSchema>, undefined>
+    errors: FieldErrors<z.infer<typeof registrationSchema>>
+    register: UseFormRegister<z.infer<typeof registrationSchema>>
     onLoginSubmit: (values: FieldValues) => void
     onRegistrationSubmit: (values: FieldValues) => void
 }
 
 export function useLoginRegister(): Properties {
     const { login, loginSuccess, registerNewUser } = useAuthContext()
+
+    const navigate = useNavigate()
+
     const {
         handleSubmit: handleLoginSubmit,
         formState: { errors: loginErrors },
@@ -44,7 +47,7 @@ export function useLoginRegister(): Properties {
 
     async function onLoginSubmit(values: FieldValues) {
         const { email, password } = values
-        await login(email, password)
+        await login(email, password, navigate)
         loginSuccess && loginReset()
     }
 

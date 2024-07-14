@@ -18,10 +18,19 @@ import {
 } from "@/components/ui/tabs"
 import { useLoginRegister } from "./utils"
 import { useAuthContext } from "@/context/Auth"
+import React from "react"
+import { useNavigate } from "react-router-dom"
+import { PRIVATE_PATHS } from "@/routes/paths"
 
 export default function LoginRegisterTab() {
 
-    const { isLoading } = useAuthContext()
+    const { isLoading, authenticatedUser } = useAuthContext()
+
+    const navigate = useNavigate()
+
+    React.useEffect(() => {
+        if (authenticatedUser) navigate(PRIVATE_PATHS.CHATS_BOARD, { replace: true })
+    }, [authenticatedUser])
 
     const {
         handleLoginSubmit,
@@ -93,9 +102,9 @@ export default function LoginRegisterTab() {
                             </CardHeader>
                             <CardContent className="space-y-2">
                                 <div className="space-y-1">
-                                    <Label htmlFor="email">Username</Label>
+                                    <Label htmlFor="username">Username</Label>
                                     <Input
-                                        id="text"
+                                        id="username"
                                         {...register("username")}
                                         className={`${errors.username && "border-red-500"}`}
                                         autoFocus
