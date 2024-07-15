@@ -4,6 +4,6 @@
 
 @layer base {
   * {
-    @apply font-poppins box-border text-sm
+    @apply font-poppins box-border text-[16px] md:text-sm
   }
 }
