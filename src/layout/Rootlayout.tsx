@@ -3,9 +3,9 @@ import { Outlet } from "react-router-dom"
 
 const RootLayout = () => {
     return (
-        <main className="h-dvh w-dvw flex">
+        <main className="overflow-y-hidden h-dvh w-auto flex">
             <CollapsibleSideNavBar />
-            <section>
+            <section className=" w-[100dvw]">
                 <Outlet />
             </section>
         </main>

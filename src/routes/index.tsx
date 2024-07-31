@@ -9,11 +9,16 @@ import Explore from "@/screens/private/explore"
 import FavouriteChats from "@/screens/private/favourite-chats"
 import Notifications from "@/screens/private/notifications"
 import Settings from "@/screens/private/settings"
+import ProfileSetup from "@/screens/setup/index"
 
 export const routes = createBrowserRouter([
     {
         path: PUBLIC_PATHS.AUTH,
         element: <LoginRegisterTab />
+    },
+    {
+        path: PUBLIC_PATHS.SETUP,
+        element: <ProfileSetup />
     },
     {
         element: <RootLayout />,

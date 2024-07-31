@@ -1,5 +1,6 @@
 export const PUBLIC_PATHS = {
     AUTH: "/",
+    SETUP: "/profile_setup"
 }
 
 export const PRIVATE_PATHS = {

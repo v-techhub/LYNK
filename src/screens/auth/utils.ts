@@ -53,7 +53,7 @@ export function useLoginRegister(): Properties {
 
     async function onRegistrationSubmit(values: FieldValues) {
         const { username, email, password } = values
-        await registerNewUser(email, password, username)
+        await registerNewUser(email, password, username, navigate)
         loginSuccess && reset()
     }
 

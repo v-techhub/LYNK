@@ -1,10 +1,22 @@
-import { auth } from "@/firebase"
+import {
+    User,
+    createUserWithEmailAndPassword,
+    onAuthStateChanged,
+    signOut,
+    updateProfile
+} from "firebase/auth"
+import {
+    ReactNode,
+    createContext,
+    useContext,
+    useEffect,
+    useState
+} from "react"
+import { auth } from "@/firebase/config"
 import { AuthContextInterface } from "@/types/auth"
-import { User, createUserWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from "firebase/auth"
 import { useToast } from "@/components/ui/use-toast"
 import { signInWithEmailAndPassword } from "firebase/auth"
 import { ToastAction } from "@radix-ui/react-toast"
-import { ReactNode, createContext, useContext, useEffect, useState } from "react"
 import { PRIVATE_PATHS, PUBLIC_PATHS } from "@/routes/paths"
 import { NavigateFunction } from "react-router-dom"
 
@@ -28,9 +40,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         onAuthStateChanged(auth, (user) => {
             setAuthenticatedUser(user)
         })
-    }, [authenticatedUser])
+    }, [authenticatedUser]) //listens for authenticated user
 
-    async function registerNewUser(email: string, password: string, username: string) {
+    async function registerNewUser(email: string, password: string, username: string, navigate: NavigateFunction) {
         try {
             setIsLoading(true)
             const res = await createUserWithEmailAndPassword(auth, email, password)
@@ -42,24 +54,25 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     <ToastAction className="border p-2 text-nowrap rounded-md hover:bg-slate-100" altText="ok">OK</ToastAction>
                 ),
             })
-            setLoginSuccess(true)
-            setTimeout(() => setIsLoading(false), 500)
+            setLoginSuccess(true) //for controlling the input states, e.g if false input states persists, else it becomes empty
+            setTimeout(() => {
+                setIsLoading(false)
+                navigate(PUBLIC_PATHS.SETUP)
+            })
         } catch (err) {
-            console.error("Registration error: ", err)
+            setIsLoading(false)
+            setLoginSuccess(false)
             err instanceof Error && toast({
-                title: "Uh oh! Something went wrong.",
+                title: "Uh oh! Something went wrong." + err.message,
                 description: "There was a problem with your request ☹️.",
                 action: (
                     <ToastAction className="border p-2 rounded-md hover:bg-slate-100" altText="Try again">Try Again</ToastAction>
                 ),
             })
-            setIsLoading(false)
-            setLoginSuccess(false)
         }
     }
 
     async function login(email: string, password: string, navigate: NavigateFunction) {
-        console.log(loginSuccess)
         try {
             setIsLoading(true)
             const res = await signInWithEmailAndPassword(auth, email, password)
@@ -74,7 +87,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             setTimeout(() => {
                 setIsLoading(false)
                 navigate(PRIVATE_PATHS.CHATS_BOARD, { replace: true })
-            }, 500)
+            }, 300)
         } catch (err) {
             err instanceof Error && toast({
                 title: "Uh oh! Something went wrong.",
@@ -90,6 +103,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     const logOut = async (navigate: NavigateFunction) => {
         try {
+            setIsLoading(true)
             await signOut(auth)
             setAuthenticatedUser(null)
             toast({
@@ -99,7 +113,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     <ToastAction className="border p-2 rounded-md hover:bg-slate-100" altText="cancel">OK</ToastAction>
                 ),
             })
-            setTimeout(() => navigate(PUBLIC_PATHS.AUTH), 500)
+            setTimeout(() => {
+                navigate(PUBLIC_PATHS.AUTH)
+                setIsLoading(false)
+            }, 3000)
         } catch (err) {
             err instanceof Error && toast({
                 title: "Uh oh! Something went wrong.",
@@ -108,6 +125,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                     <ToastAction className="border p-2 rounded-md hover:bg-slate-100" altText="Try again">Try Again</ToastAction>
                 ),
             })
+            setIsLoading(false)
         }
 
     }

@@ -21,6 +21,7 @@ import { useAuthContext } from "@/context/Auth"
 import React from "react"
 import { useNavigate } from "react-router-dom"
 import { PRIVATE_PATHS } from "@/routes/paths"
+import Meteors from "@/components/magicui/meteors";
 
 export default function LoginRegisterTab() {
 
@@ -29,7 +30,7 @@ export default function LoginRegisterTab() {
     const navigate = useNavigate()
 
     React.useEffect(() => {
-        if (authenticatedUser) navigate(PRIVATE_PATHS.CHATS_BOARD, { replace: true })
+        if (authenticatedUser && !isLoading) navigate(PRIVATE_PATHS.CHATS_BOARD, { replace: true })
     }, [authenticatedUser])
 
     const {
@@ -44,7 +45,8 @@ export default function LoginRegisterTab() {
     } = useLoginRegister()
 
     return (
-        <section className="h-screen w-screen grid place-items-center p-5">
+        <section className="relative bg-transparent overflow-hidden h-screen w-screen grid place-items-center p-5">
+            <Meteors number={30} />
             <Tabs defaultValue="login" className="w-[400px]">
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="login">Login</TabsTrigger>
@@ -56,7 +58,7 @@ export default function LoginRegisterTab() {
                             <CardHeader>
                                 <CardTitle>Login</CardTitle>
                                 <CardDescription>
-                                    Welcome back to LYNK.
+                                    Welcome back to <span className="text-emerald-500 font-bold">LYNK.</span>
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-2">
@@ -68,6 +70,7 @@ export default function LoginRegisterTab() {
                                         {...loginRegister("email")}
                                         className={`${loginErrors.email && "border-red-500"}`}
                                         autoFocus
+                                        autoComplete="off"
                                     />
                                     {loginErrors.email && <span className="text-red-500 text-[10px]">{loginErrors.email.message}</span>}
                                 </div>
@@ -83,7 +86,7 @@ export default function LoginRegisterTab() {
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button disabled={isLoading} type="submit">
+                                <Button disabled={isLoading} type="submit" className="bg-emerald-500 text-white">
                                     {isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait</> : "Login"}
                                 </Button>
                             </CardFooter>
@@ -97,7 +100,7 @@ export default function LoginRegisterTab() {
                             <CardHeader>
                                 <CardTitle>Register</CardTitle>
                                 <CardDescription>
-                                    Create your LYNK account with ease
+                                    Create your <span className="text-emerald-500 font-bold">LYNK</span> account with ease
                                 </CardDescription>
                             </CardHeader>
                             <CardContent className="space-y-2">
@@ -108,6 +111,7 @@ export default function LoginRegisterTab() {
                                         {...register("username")}
                                         className={`${errors.username && "border-red-500"}`}
                                         autoFocus
+                                        autoComplete="off"
                                     />
                                     {errors.username && <span className="text-red-500 text-[10px]">{errors.username.message}</span>}
                                 </div>
@@ -118,6 +122,7 @@ export default function LoginRegisterTab() {
                                         type="email"
                                         {...register("email")}
                                         className={`${errors.email && "border-red-500"}`}
+                                        autoComplete="off"
                                     />
                                     {errors.email && <span className="text-red-500 text-[10px]">{errors.email.message}</span>}
                                 </div>
@@ -133,7 +138,7 @@ export default function LoginRegisterTab() {
                                 </div>
                             </CardContent>
                             <CardFooter>
-                                <Button disabled={isLoading} type="submit">{isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait</> : "Register"}</Button>
+                                <Button disabled={isLoading} className="bg-emerald-500 text-white" type="submit">{isLoading ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait</> : "Register"}</Button>
                             </CardFooter>
                         </Card>
                     </form>

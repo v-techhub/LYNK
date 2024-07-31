@@ -10,12 +10,14 @@ export function useSideBar() {
         NOTIFICATIONS,
         SETTINGS
     } = PRIVATE_PATHS
-    const [collapsible, setCollapsible] = React.useState(false)
+    const [collapsible, setCollapsible] = React.useState(true)
     const { pathname } = useLocation()
+    const [activeNav, setActiveNav] = React.useState(false)
 
     function handleActiveNavigation(path: string) {
-        if (pathname === path) return true
-        return false
+        if (pathname === path) {
+            setActiveNav(true)
+        }
     }
 
     function toggleCollapsible() {
@@ -135,5 +137,6 @@ export function useSideBar() {
         collapsible,
         toggleCollapsible,
         handleActiveNavigation,
+        activeNav
     }
 }

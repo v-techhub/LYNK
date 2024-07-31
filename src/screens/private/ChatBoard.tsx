@@ -1,9 +1,9 @@
-
-
 const ChatBoard = () => {
+    return (
+        <section className="relative w-auto">
 
-
-    return "chat board"
+        </section>
+    )
 }
 
 export default ChatBoard
