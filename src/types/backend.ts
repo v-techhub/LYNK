@@ -18,3 +18,10 @@ export interface User {
     bio: string,
     joined: Date
 }
+
+export interface Chat {
+    timeSent: number
+    message: string
+    senderId: string
+    isRead: boolean
+}

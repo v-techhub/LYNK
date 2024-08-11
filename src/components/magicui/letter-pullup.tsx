@@ -1,5 +1,3 @@
-"use client";
-
 import { motion } from "framer-motion";
 
 import { cn } from "@/lib/utils";
@@ -29,7 +27,7 @@ export default function LetterPullup({
   };
 
   return (
-    <div className="flex justify-center">
+    <div className="flex justify-start flex-wrap">
       {letters.map((letter, i) => (
         <motion.h1
           key={i}
@@ -38,11 +36,11 @@ export default function LetterPullup({
           animate="animate"
           custom={i}
           className={cn(
-            "font-display text-center text-4xl font-bold tracking-[-0.02em] text-black drop-shadow-sm dark:text-white md:text-4xl md:leading-[5rem]",
+            "text-black drop-shadow-sm",
             className,
           )}
         >
-          {letter === " " ? <span>&nbsp;</span> : letter}
+          {letter === " " ? <span>&nbsp;&nbsp;&nbsp;</span> : letter}
         </motion.h1>
       ))}
     </div>

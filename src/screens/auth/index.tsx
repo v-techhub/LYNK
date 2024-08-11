@@ -45,9 +45,9 @@ export default function LoginRegisterTab() {
     } = useLoginRegister()
 
     return (
-        <section className="relative bg-transparent overflow-hidden h-screen w-screen grid place-items-center p-5">
+        <section className="relative bg-gradient-to-t from-emerald-500 to-transparent overflow-hidden h-screen w-screen grid place-items-center p-5">
             <Meteors number={30} />
-            <Tabs defaultValue="login" className="w-[400px]">
+            <Tabs defaultValue="login" className="md:w-[400px] w-[90dvw] border-none">
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="login">Login</TabsTrigger>
                     <TabsTrigger value="register">Register</TabsTrigger>

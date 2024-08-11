@@ -8,11 +8,13 @@ import { useToast } from "@/components/ui/use-toast"
 import { useNavigate } from "react-router-dom"
 import { setUserData, uploadProfilePicture } from "@/firebase/backend"
 import { useAuthContext } from "@/context/Auth"
+import { Loader2 } from "lucide-react"
 
 const ProfileSetUp = () => {
     const { authenticatedUser } = useAuthContext()
     const { toast } = useToast()
     const navigate = useNavigate()
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
     const [formData, setFormData] = useState<FormDataType>({
         profilePicture: null,
@@ -74,6 +76,7 @@ const ProfileSetUp = () => {
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault()
+        setIsSubmitting(true)
         const emptyFields = []
         for (const [key, value] of Object.entries(formData)) {
             if (value === "") {
@@ -91,6 +94,7 @@ const ProfileSetUp = () => {
             await setUserData(authenticatedUser, toast, navigate, formData)
             await uploadProfilePicture(formData.profilePicture as File, authenticatedUser?.uid as string)
         }
+        setIsSubmitting(false)
     }
 
     return (
@@ -135,7 +139,9 @@ const ProfileSetUp = () => {
                             />
                         </svg>
                     </Button>}
-                    {isLastStep && <Button className="bg-emerald-500 backdrop-blur-sm flex gap-2" type="submit">Finish</Button>}
+                    {isLastStep && <Button className="bg-emerald-500 backdrop-blur-sm flex gap-2" disabled={isSubmitting} type="submit">
+                        {isSubmitting ? <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Please wait...</> : "Finish"}
+                    </Button>}
                 </fieldset>
             </form>
         </section >

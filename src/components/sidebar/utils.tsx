@@ -83,7 +83,7 @@ export function useSideBar() {
 
             ),
             location: FAVOURITE_CHATS,
-            name: "Favorites"
+            name: "Friends"
         },
         {
             icon: (

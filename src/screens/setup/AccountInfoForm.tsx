@@ -34,16 +34,18 @@ const AccountInfoForm = ({ formData, onChange, setFormData }: FormProps) => {
         <section ref={scope}>
             <div className="flex gap-2 items-center">
                 <img src={imagePreview || avatar} alt="Profile Picture" className="rounded-full h-24 w-24 border object-cover" />
-                <ShineBorder color={["#A07CFE", "#FE8FB5", "#FFBE7B"]} className="active:scale-90 transition-all duration-200 hover:bg-gray-50 shadow-xl w-full place-items-center">
-                    <Label className="absolute cursor-pointer w-full text-center h-full mt-12" htmlFor="profilePicture">Set profile picture</Label>
-                    <Input
-                        type="file"
-                        onChange={profilePictureHandler}
-                        className="hidden"
-                        id="profilePicture"
-                        name='profilePicture'
-                    />
-                </ShineBorder>
+                <div className="">
+                    <ShineBorder color={["#A07CFE", "#FE8FB5", "#FFBE7B"]} className="active:scale-90 transition-all duration-200 hover:bg-gray-50 shadow-xl place-items-center ">
+                        <Label className="absolute cursor-pointer md:w-full text-center h-full mt-12" htmlFor="profilePicture">Set profile picture</Label>
+                        <Input
+                            type="file"
+                            onChange={profilePictureHandler}
+                            className="hidden"
+                            id="profilePicture"
+                            name='profilePicture'
+                        />
+                    </ShineBorder>
+                </div>
             </div>
             <div>
                 <Label>First Name</Label>

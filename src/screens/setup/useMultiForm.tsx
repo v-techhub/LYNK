@@ -9,7 +9,6 @@ export function useMultiForm(steps: ReactNode[]) {
     const nextStep = () => {
         if (currentStep === steps.length - 1) return currentStep
         setCurrentStep(prevStep => prevStep + 1)
-
     }
 
     const previousStep = () => {
@@ -17,9 +16,7 @@ export function useMultiForm(steps: ReactNode[]) {
         setCurrentStep(prevStep => prevStep - 1)
     }
 
-    const jumpToStep = (idx: number) => {
-        setCurrentStep(idx)
-    }
+    const jumpToStep = (idx: number) => setCurrentStep(idx)
 
     return {
         nextStep,
