@@ -30,7 +30,7 @@ export default function DeleteDialog({ element, user, setIsConnecting }: Profile
             action: {
                 label: "UNDO",
                 onClick: () => {
-                    connectNewUser(user, authenticatedUser?.uid as string, setIsConnecting)
+                    connectNewUser(user, authenticatedUser?.uid as string, setIsConnecting, authenticatedUser as any)
                 }
             },
         })

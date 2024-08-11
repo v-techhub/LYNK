@@ -22,9 +22,9 @@ export default function ChatBox() {
     const [chats, setChats] = useState<Chat[]>([])
     const end = useRef(null)
 
-    useEffect(() => {
-        const endOfChatElement = document.getElementById("endOfChat")
-    }, [])
+    // useEffect(() => {
+    //     const endOfChatElement = document.getElementById("endOfChat")
+    // }, [])
 
     useEffect(() => {
         getChat(authenticatedUser?.uid as string, selectedUserForChats?.id as string, setChats)
@@ -138,6 +138,7 @@ export default function ChatBox() {
                         placeholder="Write message..."
                         className="border-none bg-transparent"
                         name="message"
+                        autoComplete="off"
                     />
                     <Button type="submit">
                         <svg
