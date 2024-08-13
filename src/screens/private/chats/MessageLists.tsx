@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { useForm, FieldValues } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -6,9 +7,12 @@ import { z } from "zod"
 import ChatList from "./ChatList"
 import { motion } from "framer-motion"
 import { useChatStore } from "@/lib/zustand/useChatStore"
+import { getLastMessages } from "@/firebase/backend"
+import { useAuthContext } from "@/context/Auth"
 
 const MessageLists = () => {
     const isChatOpenOnMobile = useChatStore(states => states.isChatOpenOnMobile)
+    const { authenticatedUser } = useAuthContext()
 
     const {
         handleSubmit,
@@ -21,6 +25,10 @@ const MessageLists = () => {
     function onQuerySearch(value: FieldValues) {
         console.log(value)
     }
+
+    useEffect(() => {
+        getLastMessages(authenticatedUser?.uid as string)
+    }, [])
 
     return (
         <section className={`w-full ${isChatOpenOnMobile && "hidden lg:grid"} md:w-[30%] grid h-dvh gap-4`}>

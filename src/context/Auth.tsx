@@ -27,7 +27,8 @@ const AuthContext = createContext<AuthContextInterface>({
     loginSuccess: false,
     login: async () => { },
     registerNewUser: async () => { },
-    logOut: async () => { }
+    logOut: async () => { },
+    isUserLoading: false
 })
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
@@ -35,10 +36,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [isLoading, setIsLoading] = useState(false)
     const [loginSuccess, setLoginSuccess] = useState(false)
     const { toast } = useToast()
+    const [isUserLoading, setIsUserLoading] = useState(true)
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             setAuthenticatedUser(user)
+            setIsUserLoading(false)
         })
     }, [authenticatedUser]) //listens for authenticated user
 
@@ -137,7 +140,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         loginSuccess,
         login,
         registerNewUser,
-        logOut
+        logOut,
+        isUserLoading
     }
 
     return <AuthContext.Provider value={contextValues}>

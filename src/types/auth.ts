@@ -9,4 +9,5 @@ export interface AuthContextInterface {
     login: (email: string, password: string, navigate: NavigateFunction) => Promise<void>
     registerNewUser: (email: string, password: string, username: string, navigate: NavigateFunction) => Promise<void>
     logOut: (navigate: NavigateFunction) => Promise<void>
+    isUserLoading: boolean
 }

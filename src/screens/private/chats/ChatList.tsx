@@ -15,25 +15,10 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useChatStore } from "@/lib/zustand/useChatStore"
 import { useUserStore } from "@/lib/zustand/useUserStore"
-// {
-//     chats.map((chat, idx) => (
-//         <section key={idx} className="flex gap-2 mt-3 items-center p-1 hover:bg-gray-100 duration-200 transition-all rounded-md cursor-pointer">
-//             <img
-//                 className="w-14 h-14 rounded-full"
-//                 src={chat.avatar || "/view-3d-confident-businessman.jpg"}
-//                 alt="Avatar"
-//             />
-//             <div className="flex-1">
-//                 <p className="text-lg">{chat.username}</p>
-//                 <p className="text-gray-400 text-[11px]">{chat.lastMessage}</p>
-//             </div>
-//             <div className="flex flex-col justify-between gap-3">
-//                 <p>{chat.date}</p>
-//                 <span className="bg-emerald-500 p-1 h-2 w-2 self-end rounded-full">{""}</span> {/* if not seen */}
-//             </div>
-//         </section>
-//     ))
-// }
+
+const chats = [
+    { avatar: "/female.jpg", username: "Sarah Grace", lastMessage: "Hi", date: "02:30pm" }
+]
 
 export default function ChatList() {
     const { authenticatedUser } = useAuthContext()
@@ -55,7 +40,26 @@ export default function ChatList() {
 
     return (
         <section className="relative overflow-y-scroll px-2 w-auto h-[90dvh]">
-            <div>No Messages yet</div>
+            {/* <div>No Messages yet</div> */}
+            {
+                chats.map((chat, idx) => (
+                    <section key={idx} className="flex gap-2 mt-3 items-center p-1 hover:bg-gray-100 duration-200 transition-all rounded-md cursor-pointer">
+                        <img
+                            className="w-14 h-14 rounded-full"
+                            src={chat.avatar || "/view-3d-confident-businessman.jpg"}
+                            alt="Avatar"
+                        />
+                        <div className="flex-1">
+                            <p className="text-lg">{chat.username}</p>
+                            <p className="text-gray-400 text-[11px]">{chat.lastMessage}</p>
+                        </div>
+                        <div className="flex flex-col justify-between gap-3">
+                            <p>{chat.date}</p>
+                            <span className="bg-emerald-500 p-1 h-2 w-2 self-end rounded-full">{""}</span> {/* if not seen */}
+                        </div>
+                    </section>
+                ))
+            }
             <Sheet>
                 <SheetTrigger>
                     <Button className="absolute bottom-20 right-5 hover:scale-110 active:scale-90 transition-all drop-shadow-2xl rounded-full h-fit w-fit p-2 bg-slate-200 text-black hover:text-emerald-500 hover:bg-slate-200">

@@ -11,7 +11,6 @@ import {
     doc,
     setDoc,
     getDocs,
-    deleteDoc,
     arrayUnion
 } from "firebase/firestore";
 import { User as UserType, Chat } from "@/types/backend"
@@ -21,18 +20,23 @@ import { FIRESTORE_DB_COLLECTIONS } from "./constants"
 
 const { USERS, CONNECTIONS, CHATS } = FIRESTORE_DB_COLLECTIONS
 
+export function getLastMessages(userId: string) {
+    //get access to individual chats
+    const ref = doc(db, `${CHATS}/${userId}/messages/RJbSXWUPaUgZqkJxZqb5TVcYglC2`)
+    onSnapshot(ref, (docSnapshot) => {
+        console.log(docSnapshot.data()?.chats)
+    })
+    //get access to the last messages
+
+    //push them to an array
+}
+
 export async function getChat(userId: string, id: string, setChat: any) {
     try {
         const docRef = doc(db, `${CHATS}/${userId}/messages/${id}`);
         onSnapshot(docRef, docSnapshot => {
-            if (docSnapshot.exists()) {
-                if (docSnapshot.data().chatID === id) {
-                    setChat(docSnapshot.data().chats)
-                }
-            }
-            if (!docSnapshot.exists()) {
-                setChat([])
-            }
+            if (docSnapshot.exists() && docSnapshot.data().chatID === id) setChat(docSnapshot.data().chats)
+            if (!docSnapshot.exists()) setChat([])
         })
     } catch (err) {
         console.error("Error fetching chats", err)
@@ -61,9 +65,27 @@ export async function sendMessage(userId: string, id: string, data: Chat) {
     }
 }
 
-export async function deleteConnectedUser(userId: string, id: string) {
+export async function deleteConnectedUser(userId: string, id: string, setIsConnecting: React.Dispatch<React.SetStateAction<boolean>>) {
     try {
-        await deleteDoc(doc(db, `${CONNECTIONS}/${userId}/${id}`))
+        setIsConnecting(true)
+        const recentConnections: UserType[] = []
+        const q = query(collection(db, `${CONNECTIONS}`), where("id", "==", `${userId}`))
+        const querySnapshot = await getDocs(q)
+        querySnapshot.forEach(doc => {
+            if (doc.exists()) {
+                const connections = doc.data().users as UserType[]
+                for (let users of connections) {
+                    if (users.id !== id) {
+                        recentConnections.push(users)
+                    }
+                }
+            }
+        })
+        await setDoc(doc(db, `${CONNECTIONS}/${userId}`), {
+            id: userId,
+            users: recentConnections
+        })
+        setIsConnecting(false)
     } catch (err) {
         console.log("Error deleting user", err)
     }

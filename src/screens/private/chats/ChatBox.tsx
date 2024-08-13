@@ -22,9 +22,10 @@ export default function ChatBox() {
     const [chats, setChats] = useState<Chat[]>([])
     const end = useRef(null)
 
-    // useEffect(() => {
-    //     const endOfChatElement = document.getElementById("endOfChat")
-    // }, [])
+    useEffect(() => {
+        const endOfChatElement = document.getElementById("endOfChat")
+        endOfChatElement?.scrollIntoView({ behavior: "smooth" })
+    }, [])
 
     useEffect(() => {
         getChat(authenticatedUser?.uid as string, selectedUserForChats?.id as string, setChats)
@@ -128,7 +129,7 @@ export default function ChatBox() {
                                     </div>
                                 </li>
                             ))}
-                            <div className="" id="endOfChat" ref={end}>END OF CHAT</div>
+                            <div className="absolute bottom-0" id="endOfChat" ref={end}>END OF CHAT</div>
                         </ul>
                     </div>
                 </section>

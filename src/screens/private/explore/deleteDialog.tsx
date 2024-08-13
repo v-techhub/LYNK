@@ -10,7 +10,7 @@ import {
     DialogClose
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { deleteConnectedUser, connectNewUser } from "@/firebase/backend"
+import { deleteConnectedUser } from "@/firebase/backend"
 import { User } from "@/types/backend"
 import { useAuthContext } from "@/context/Auth"
 import { toast } from "sonner"
@@ -24,15 +24,9 @@ interface ProfileDialogPropTypes {
 export default function DeleteDialog({ element, user, setIsConnecting }: ProfileDialogPropTypes) {
     const { authenticatedUser } = useAuthContext()
     const handleDisconnection = () => {
-        deleteConnectedUser(authenticatedUser?.uid as string, user.id)
+        deleteConnectedUser(authenticatedUser?.uid as string, user.id, setIsConnecting)
         toast("Disconnection successful!", {
             description: `You have successfully removed ${user.firstName} ${user.lastName} from your connections.`,
-            action: {
-                label: "UNDO",
-                onClick: () => {
-                    connectNewUser(user, authenticatedUser?.uid as string, setIsConnecting, authenticatedUser as any)
-                }
-            },
         })
     }
     return (

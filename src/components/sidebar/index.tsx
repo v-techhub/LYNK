@@ -1,12 +1,14 @@
 import ProfileInfo from "./ProfileInfo"
 import SideBarItems from "./SideBarItems"
 import { useSideBar } from "./utils"
+import { useChatStore } from "@/lib/zustand/useChatStore"
 
 const CollapsibleSideNavBar = () => {
     const { collapsible, toggleCollapsible } = useSideBar()
+    const isChatOpenOnMobile = useChatStore(states => states.isChatOpenOnMobile)
 
     return (
-        <nav className={`relative h-screen ${collapsible ? "w-16 justify-center" : "w-[150px]"} flex flex-col bg-gray-950 px-2 py-5 transition-all duration-200`}>
+        <nav className={`relative h-screen ${collapsible ? "w-16 justify-center" : "w-[150px]"} ${isChatOpenOnMobile ? "hidden" : "flex"} flex-col bg-gray-950 px-2 py-5 transition-all duration-200`}>
             <section className="mb-14">
                 <div className={`text-4xl font-semibold bg-clip-text bg-gradient-to-r from-emerald-800 to-emerald-300 text-transparent`}>
                     {collapsible ? "L." : "LYNK."}
